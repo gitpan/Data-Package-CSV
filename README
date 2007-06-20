@@ -2,6 +2,10 @@ NAME
     Data::Package::CSV - A Data::Package class for CSV data using Parse::CSV
 
 DESCRIPTION
+    The Data::Package::CSV package provides a subclass of
+    Data::Package::File that provides data from a CSV file by integrating
+    with Parse::CSV.
+
 METHODS
   csv_options
     The cvs_options method is the most direct method, with full control over
@@ -13,77 +17,12 @@ METHODS
     more details on what you should return to match your data.
 
     By default, the null list is return, specifying entirely default options
-    to the Parse::CSV constructor (array mode) and not specifying
+    to the Parse::CSV constructor (array mode) and not specifying any
+    filters or parsing variations.
 
     If it list that is returned does not have either a data source (either a
-    "handle" param or "file" param) additional methods will be called (in
-    the same order as documented below).
-
-  cvs_handle
-    If the cvs_options method does not return a "handle" or "file" param the
-    first method tried for a data source is cvs_handle.
-
-    If defined, it should return a value that Parse::CSV will accept as its
-    "handle" param.
-
-    It cvs_handle is not defined or returns "undef", the next method that
-    will be tried is cvs_file.
-
-  cvs_file
-    If the cvs_options method does not return a "handle" or "file" param the
-    second method tried for a data source is cvs_file.
-
-    If defined, it should return a value that Parse::CSV will accept as its
-    "file" param.
-
-    If cvs_file is not defined or returns "undef", the filal method that
-    will be tried is csv_module_file.
-
-  cvs_module_file
-      # In a package of this name, the two following
-      # methods are equivalent to each other.
-      package Module::Name;
-  
-      # A File::ShareDir file with the package class
-      sub csv_module_file {
-          return File::Spec->catfile('subdir', 'data.csv');
-      }
-  
-      # A File::ShareDir file with an explicit class
-      sub csv_module_file {
-          return ( 'Module::Name', 'data.csv' );
-      }
-
-    If the cvs_options method does not return a "handle" or "file" param the
-    final method tried for a data source is csv_module_file, which provides
-    integration with File::ShareDir.
-
-    It can be used in two modes.
-
-    Returning a two-param list will cause the two values to be passed
-    directly to File::ShareDir::module_file.
-
-    Returning a single param will cause the value to be passed through to
-    File::ShareDir::module_file with the first param as your class.
-
-  cvs_dist_file
-      package Module::Name::Subpackage;
-  
-      use strict;
-      use base 'Data::Package::CSV';
-  
-      # A File::ShareDir file with the package class
-      sub csv_dist_file {
-          return ('Module-Name', File::Spec->catfile('dir', 'data.csv'));
-      }
-  
-      1;
-
-    If the cvs_options method does not return a "handle" or "file" param the
-    fourth method tried for a data source is csv_dist_file, which provides
-    integration with File::ShareDir.
-
-    It returns two values which will be passed to File::ShareDir::dist_file.
+    "handle" param or "file" param) then the "file" method for the parent
+    class will be called to locate a file.
 
 SUPPORT
     Bugs should always be submitted via the CPAN bug tracker.

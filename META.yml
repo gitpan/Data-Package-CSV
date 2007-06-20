@@ -16,9 +16,9 @@ no_index:
     - inc
     - t
 requires: 
-  Data::Package: 1.00
+  Data::Package::File: 1.02
   File::ShareDir: 0.05
   File::Spec: 0.80
   Parse::CSV: 1.00
   perl: 5.005
-version: 0.01
+version: 1.00
